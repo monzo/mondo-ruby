@@ -1,0 +1,13 @@
+lib/*seed*.rb
+lib/example.rb
+lib/*test*.rb
+doc/
+Gemfile.lock
+mondo*.gem
+.yardoc
+.yardopts
+mondo-*.gem
+mondo-ruby.zip
+.rvmrc
+.rbx
+.bundle
