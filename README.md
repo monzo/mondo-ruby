@@ -44,4 +44,24 @@ mondo.transctions(expand: merchant, limit: 3, since: "2015-08-10T23:00:00Z")
     #<Mondo::Transaction -28GBP FGW SELF SERVICE       PADDINGTON    GBR tx_00008zyGtoILjhPUwlZli5>, 
     #<Mondo::Transaction -6GBP EXPRESS OFF LICENSE    LONDON        GBR tx_00008zzwuRFvGsQCml15Kj>
 ]
+
+# TODO - make a Merchant object
+mondo.transactions.last.merchant
+=> 
+	{
+		"id"=>"merch_00008z40hJLCkWMs15lQDx", 
+    "group_id"=>"grp_00008yEdbBXWcsqVNdftbd", 
+    "created"=>"2015-08-15T11:07:04Z", 
+    "name"=>"East Midlands Trains", 
+    "logo"=>"https://pbs.twimg.com/profile_images/532472643694235648/vxJSda4F_400x400.png", 
+    "address"=>{
+      "address"=>"St Pancras Station", 
+      "city"=>"London", 
+      "region"=>"", 
+      "country"=>"GBR", 
+      "postcode"=>"NW1 2QP", 
+      "latitude"=>51.531427, 
+      "longitude"=>-0.126133
+    }
+  } 
 ```
