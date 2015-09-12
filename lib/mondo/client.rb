@@ -20,6 +20,11 @@ module Mondo
       raise ClientError.new("You must provide a token") unless self.access_token
     end
 
+    # Replies "pong"
+    def ping
+      api_request(:get, "/ping").parsed["ping"]
+    end
+
     # Issue an GET request to the API server
     #
     # @note this method is for internal use
@@ -126,9 +131,7 @@ module Mondo
         response
       when 400..599
         error = ApiError.new(response)
-        response.error = error
-        response
-        # TODO - raise or not?
+        raise(error, "Status code #{response.status}")
       else
         error = ApiError.new(response)
         raise(error, "Unhandled status code value of #{response.status}")

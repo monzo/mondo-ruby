@@ -13,12 +13,18 @@ mondo = Mondo::Client.new(
 )
 ```
 
+## Configure a different API URL
+```ruby
+mondo.api_url = "https://otherurl.com"
+```
+
 ## Ping
 
-```ruby
-mondo.api_get("/ping")
+Check your client is configured correctly
 
-=> #<Faraday::Response @body="{\"ping\":\"pong\"}" @status=200>> 
+```ruby
+mondo.ping
+=> "pong"
 ```
 
 ## List Transactions
