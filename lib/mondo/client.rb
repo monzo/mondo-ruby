@@ -137,7 +137,7 @@ module Mondo
 
     # The Faraday connection object
     def connection
-      @connection ||= Faraday.new(self.api_url, nil)
+      @connection ||= Faraday.new(self.api_url, { ssl: { verify: false } })
     end
   end
 end
