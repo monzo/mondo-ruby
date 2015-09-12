@@ -48,8 +48,8 @@ mondo.transctions(expand: merchant, limit: 3, since: "2015-08-10T23:00:00Z")
 # TODO - make a Merchant object
 mondo.transactions.last.merchant
 => 
-	{
-		"id"=>"merch_00008z40hJLCkWMs15lQDx", 
+  {
+    "id"=>"merch_00008z40hJLCkWMs15lQDx", 
     "group_id"=>"grp_00008yEdbBXWcsqVNdftbd", 
     "created"=>"2015-08-15T11:07:04Z", 
     "name"=>"East Midlands Trains", 
