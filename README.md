@@ -7,7 +7,10 @@ API documentation, usage guides, and setup information can be found at [getmondo
 ## Initialize your client
 
 ```ruby
-mondo = Mondo::Client.new(token: YOUR_TOKEN)
+mondo = Mondo::Client.new(
+	token: YOUR_TOKEN,
+	account_id: YOUR_ACCOUNT_ID
+)
 ```
 
 ## Ping
@@ -21,6 +24,6 @@ mondo.api_get("/ping")
 ## List Transactions
 
 ```ruby
-mondo.api_get("/transactions", account_id: YOUR_ACCOUNT_ID)
-=> #<Faraday::Response @body="{\"transactions\":[]}" @status=200>
+mondo.transactions
+=> [#<Mondo::Transaction 50GBP Top up via Stripe tx_0000900AEVTaaWMkPW8D6v>] 
 ```

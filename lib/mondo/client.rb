@@ -10,11 +10,12 @@ module Mondo
   class Client
     API_URL = 'https://api.getmondo.co.uk'
 
-    attr_accessor :access_token
+    attr_accessor :access_token, :account_id
 
     def initialize(args = {})
       Utils.symbolize_keys! args
       self.access_token = args.fetch(:token)
+      self.account_id = args.fetch(:account_id, nil)
       raise ClientError.new("You must provide a token") unless self.access_token
     end
 
@@ -68,13 +69,14 @@ module Mondo
       request(method, path, opts)
     end
 
-    # @method transaction(id)
-    # @param [String] id of the transaction
-    # @return [Transaction] the transaction matching the id requested
-    # TODO
-    # def transaction(id)
-    #   Transaction.find_with_client(self, id)
-    # end
+    # @method transaction
+    # @return [Transactions] all transactions for this user
+    def transactions
+      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
+      resp = api_get("/transactions", account_id: self.account_id)
+      return resp unless resp.error.nil?
+      resp.parsed["transactions"].map { |tx| Transaction.new(tx) }
+    end
 
     def api_url
       API_URL
@@ -112,8 +114,26 @@ module Mondo
       opts[:body] = MultiJson.encode(opts[:data]) if !opts[:data].nil?
       path = URI.encode(path)
 
-      connection.run_request(method, path, opts[:body], opts[:headers]) do |req|
+      resp = connection.run_request(method, path, opts[:body], opts[:headers]) do |req|
         req.params = opts[:params] if !opts[:params].nil?
+      end
+
+      response = Response.new(resp)
+
+      case response.status
+      when 301, 302, 303, 307
+        # TODO
+      when 200..299, 300..399
+        # on non-redirecting 3xx statuses, just return the response
+        response
+      when 400..599
+        error = ApiError.new(response)
+        response.error = error
+        response
+        # TODO - raise or not?
+      else
+        error = ApiError.new(response)
+        raise(error, "Unhandled status code value of #{response.status}")
       end
     end
 
