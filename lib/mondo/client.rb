@@ -8,14 +8,15 @@ require 'base64'
 
 module Mondo
   class Client
-    API_URL = 'https://api.getmondo.co.uk'
+    DEFAULT_API_URL = 'https://api.getmondo.co.uk'
 
-    attr_accessor :access_token, :account_id
+    attr_accessor :access_token, :account_id, :api_url
 
     def initialize(args = {})
       Utils.symbolize_keys! args
       self.access_token = args.fetch(:token)
       self.account_id = args.fetch(:account_id, nil)
+      self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
       raise ClientError.new("You must provide a token") unless self.access_token
     end
 
@@ -71,15 +72,12 @@ module Mondo
 
     # @method transaction
     # @return [Transactions] all transactions for this user
-    def transactions
+    def transactions(opts = {})
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
-      resp = api_get("/transactions", account_id: self.account_id)
+      opts.merge!(account_id: self.account_id)
+      resp = api_get("/transactions", opts)
       return resp unless resp.error.nil?
       resp.parsed["transactions"].map { |tx| Transaction.new(tx) }
-    end
-
-    def api_url
-      API_URL
     end
 
     def user_agent
@@ -139,7 +137,7 @@ module Mondo
 
     # The Faraday connection object
     def connection
-      @connection ||= Faraday.new(API_URL, nil)
+      @connection ||= Faraday.new(self.api_url, nil)
     end
   end
 end

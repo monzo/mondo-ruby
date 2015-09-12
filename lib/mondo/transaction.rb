@@ -7,9 +7,12 @@ module Mondo
                   :amount,
                   :currency,
                   :merchant,
-                  :notes
+                  :notes,
+                  :metadata,
+                  :raw_data
 
 		def initialize(hash={})
+      self.raw_data = hash
 			hash.each { |key,val| send("#{key}=", val) if respond_to?("#{key}=") }
       self.to_s
 		end
