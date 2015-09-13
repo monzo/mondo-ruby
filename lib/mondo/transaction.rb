@@ -1,8 +1,7 @@
 module Mondo
-	class Transaction
+	class Transaction < Resource
 
     attr_accessor :id, 
-                  :created,
                   :description,
                   :amount,
                   :currency,
@@ -11,11 +10,7 @@ module Mondo
                   :metadata,
                   :raw_data
 
-		def initialize(hash={})
-      self.raw_data = hash
-			hash.each { |key,val| send("#{key}=", val) if respond_to?("#{key}=") }
-      self.to_s
-		end
+    date_accessor :created
 
     def to_s
       "#<#{self.class} #{self.amount_with_currency} #{self.description} #{id}>"
