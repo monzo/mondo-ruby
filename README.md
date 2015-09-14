@@ -76,10 +76,10 @@ mondo.transactions.last.merchant
 
 ```ruby
 tx = mondo.transactions.first
-tx.metadata[:tags] += "#expenses" # tag this "expenses"
-tx.save_metadata
 
 # You can store deeply-nested key-value data on metadata. All values are stored & returned as strings.
+tx.metadata[:tags] += "#expenses" # tag this "expenses"
 
+tx.save_metadata
 => true
 ```
