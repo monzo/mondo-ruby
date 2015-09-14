@@ -55,6 +55,16 @@ module Mondo
       api_request(:put, path, :data => data)
     end
 
+    # Issue a PATCH request to the API server
+    #
+    # @note this method is for internal use
+    # @param [String] path the path that will be added to the API prefix
+    # @param [Hash] data a hash of data that will be sent as the request body
+    # @return [Hash] hash the parsed response data
+    def api_patch(path, data = {})
+      api_request(:patch, path, :data => data)
+    end
+
     # Issue a DELETE request to the API server
     #
     # @note this method is for internal use
@@ -82,7 +92,7 @@ module Mondo
       opts.merge!(account_id: self.account_id)
       resp = api_get("/transactions", opts)
       return resp unless resp.error.nil?
-      resp.parsed["transactions"].map { |tx| Transaction.new(tx) }
+      resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
     end
 
     def user_agent

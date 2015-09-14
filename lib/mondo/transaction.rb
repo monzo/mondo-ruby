@@ -24,5 +24,9 @@ module Mondo
     def amount_with_currency
       "#{amount/100}#{currency}"
     end
+
+    def save_metadata
+      self.client.api_patch("/transactions/#{self.id}", metadata: self.metadata)
+    end
 	end
 end
