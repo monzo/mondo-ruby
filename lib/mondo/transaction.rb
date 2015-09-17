@@ -1,14 +1,14 @@
 module Mondo
-	class Transaction < Resource
+  class Transaction < Resource
 
     attr_accessor :id, 
-                  :description,
-                  :amount,
-                  :currency,
-                  :merchant,
-                  :notes,
-                  :metadata,
-                  :raw_data
+      :description,
+      :amount,
+      :currency,
+      :merchant,
+      :notes,
+      :metadata,
+      :raw_data
 
     date_accessor :created
 
@@ -28,5 +28,5 @@ module Mondo
     def save_metadata
       self.client.api_patch("/transactions/#{self.id}", metadata: self.metadata)
     end
-	end
+  end
 end
