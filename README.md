@@ -44,7 +44,7 @@ mondo.transactions
 		#<Mondo::Transaction -6GBP EXPRESS OFF LICENSE    LONDON        GBR tx_00008zzwuRFvGsQCml15Kj>
 ]
 
-mondo.transactions(expand: merchant, limit: 3, since: "2015-08-10T23:00:00Z")
+mondo.transactions(expand: :merchant, limit: 3, since: "2015-08-10T23:00:00Z")
 => [
     #<Mondo::Transaction -6GBP OZONE COFFEE ROASTERS  LONDON        GBR tx_00008zy8VxynHJGWOqY3aD>, 
     #<Mondo::Transaction -28GBP FGW SELF SERVICE       PADDINGTON    GBR tx_00008zyGtoILjhPUwlZli5>, 
