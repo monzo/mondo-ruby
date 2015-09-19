@@ -1,11 +1,10 @@
 module Mondo
   class Transaction < Resource
 
-    attr_accessor :id, 
+    attr_accessor :id,
       :description,
       :amount,
       :currency,
-      :merchant,
       :notes,
       :metadata,
       :raw_data
@@ -27,6 +26,15 @@ module Mondo
 
     def save_metadata
       self.client.api_patch("/transactions/#{self.id}", metadata: self.metadata)
+    end
+
+    def merchant(opts={})
+      if raw_data['merchant'].kind_of?(Hash)
+        ::Mondo::Merchant.new(raw_data['merchant'], client)
+      else
+        self.raw_data['merchant'] = self.client.transaction(self.id, expand: [:merchant]).raw_data['merchant']
+        merchant(opts)
+      end
     end
   end
 end
