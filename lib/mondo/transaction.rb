@@ -7,8 +7,7 @@ module Mondo
       :currency,
       :merchant,
       :notes,
-      :metadata,
-      :raw_data
+      :metadata
 
     date_accessor :created
 

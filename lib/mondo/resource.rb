@@ -1,7 +1,8 @@
 module Mondo
   class Resource
 
-    attr_accessor :client
+    attr_accessor :client, :raw_data
+
 
     def initialize(hash={}, client)
       self.raw_data = hash

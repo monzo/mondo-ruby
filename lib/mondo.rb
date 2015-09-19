@@ -7,4 +7,6 @@ module Mondo
   require './lib/mondo/utils'
 
   require './lib/mondo/transaction'
+  require './lib/mondo/feed_item'
+
 end
