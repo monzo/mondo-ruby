@@ -3,11 +3,18 @@ module Mondo
 
     attr_accessor :client, :raw_data
 
-
     def initialize(hash={}, client)
       self.raw_data = hash
       self.client = client
       hash.each { |key,val| send("#{key}=", val) if respond_to?("#{key}=") }
+      self.to_s
+    end
+
+     def to_s
+      "#<#{self.class} #{raw_data}>"
+    end
+
+    def inspect
       self.to_s
     end
 

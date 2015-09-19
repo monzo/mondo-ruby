@@ -8,5 +8,6 @@ module Mondo
     def address
       ::Mondo::Address.new(raw_data['address'], self.client)
     end
+
   end
 end

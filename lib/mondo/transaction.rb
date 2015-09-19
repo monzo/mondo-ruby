@@ -10,14 +10,6 @@ module Mondo
 
     date_accessor :created
 
-    def to_s
-      "#<#{self.class} #{self.amount_with_currency} #{self.description} #{id}>"
-    end
-
-    def inspect
-      self.to_s
-    end
-
     # TODO - proper currency library
     def amount_with_currency
       "#{amount/100}#{currency}"
