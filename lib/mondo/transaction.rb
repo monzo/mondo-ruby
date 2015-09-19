@@ -36,5 +36,13 @@ module Mondo
         merchant(opts)
       end
     end
+
+    def tags
+      metadata["tags"]
+    end
+
+    def tags=(t)
+      metadata["tags"] = t
+    end
   end
 end
