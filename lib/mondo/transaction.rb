@@ -36,5 +36,5 @@ module Mondo
     def tags=(t)
       metadata["tags"] = t
     end
-	end
+  end
 end
