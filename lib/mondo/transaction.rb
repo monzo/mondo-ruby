@@ -28,12 +28,12 @@ module Mondo
     end
 
     def merchant(opts={})
-      if raw_data['merchant'].kind_of?(Hash)
-        ::Mondo::Merchant.new(raw_data['merchant'], client)
-      else
+      unless raw_data['merchant'].kind_of?(Hash)
+        # Go and refetch the transaction with merchant info expanded
         self.raw_data['merchant'] = self.client.transaction(self.id, expand: [:merchant]).raw_data['merchant']
-        merchant(opts)
       end
+
+      ::Mondo::Merchant.new(raw_data['merchant'], client)
     end
 
     def tags
