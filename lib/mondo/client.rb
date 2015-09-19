@@ -95,12 +95,17 @@ module Mondo
       resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
     end
 
+<<<<<<< HEAD
     # @method transaction
     # @return <Transaction> of the transaction information
     def transaction(transaction_id, opts = {})
       resp = api_get("/transactions/#{transaction_id}", opts)
       return resp unless resp.error.nil?
       Transaction.new(resp.parsed['transaction'], self)
+=======
+    def create_feed_item(params)
+      FeedItem.new(params, self).save
+>>>>>>> master
     end
 
     def user_agent
@@ -115,8 +120,6 @@ module Mondo
           "#{gem_info} (#{comment.join("; ")})"
         end
     end
-
-    private
 
     # Send a request to the Mondo API servers
     #
@@ -133,6 +136,9 @@ module Mondo
       opts[:headers]['Authorization'] = "Bearer #{@access_token}"
 
       opts[:body] = MultiJson.encode(opts[:data]) if !opts[:data].nil?
+
+      puts opts
+
       path = URI.encode(path)
 
       resp = connection.run_request(method, path, opts[:body], opts[:headers]) do |req|
