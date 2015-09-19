@@ -28,5 +28,13 @@ module Mondo
     def save_metadata
       self.client.api_patch("/transactions/#{self.id}", metadata: self.metadata)
     end
+
+    def tags
+      metadata["tags"]
+    end
+
+    def tags=(t)
+      metadata["tags"] = t
+    end
 	end
 end
