@@ -6,5 +6,7 @@ module Mondo
   require './lib/mondo/errors'
   require './lib/mondo/utils'
 
+  require './lib/mondo/address'
   require './lib/mondo/transaction'
+  require './lib/mondo/merchant'
 end
