@@ -108,7 +108,7 @@ module Mondo
         end
     end
 
-  private
+    private
 
     # Send a request to the Mondo API servers
     #
@@ -123,7 +123,7 @@ module Mondo
       opts[:headers]['Content-Type'] = 'application/json' unless method == :get
       opts[:headers]['User-Agent'] = user_agent
       opts[:headers]['Authorization'] = "Bearer #{@access_token}"
-      
+
       opts[:body] = MultiJson.encode(opts[:data]) if !opts[:data].nil?
       path = URI.encode(path)
 
