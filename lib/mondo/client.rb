@@ -85,7 +85,7 @@ module Mondo
       request(method, path, opts)
     end
 
-    # @method transaction
+    # @method transactions
     # @return [Transactions] all transactions for this user
     def transactions(opts = {})
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
@@ -93,6 +93,14 @@ module Mondo
       resp = api_get("/transactions", opts)
       return resp unless resp.error.nil?
       resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
+    end
+
+    # @method transaction
+    # @return <Transaction> of the transaction information
+    def transaction(transaction_id, opts = {})
+      resp = api_get("/transactions/#{transaction_id}", opts)
+      return resp unless resp.error.nil?
+      Transaction.new(resp.parsed['transaction'], self)
     end
 
     def create_feed_item(params)

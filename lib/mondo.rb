@@ -1,5 +1,4 @@
 module Mondo
-	
   require 'mondo/client'
   require 'mondo/version'
 
@@ -11,4 +10,7 @@ module Mondo
   require 'mondo/transaction'
   require 'mondo/feed_item'
 
+  require 'mondo/address'
+  require 'mondo/transaction'
+  require 'mondo/merchant'
 end
