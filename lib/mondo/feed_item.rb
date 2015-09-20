@@ -3,6 +3,7 @@ module Mondo
 
     attr_accessor :title,
                   :image_url,
+                  :app_uri, # TODO - make me consistent when the Mondo API changes
                   :background_color,
                   :body
 
@@ -18,6 +19,7 @@ module Mondo
         type: "image",
         title: self.title,
         image_url: self.image_url,
+        app_uri: self.app_uri,
         background_color: self.background_color,
         body: self.body,
       }

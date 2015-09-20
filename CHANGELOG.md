@@ -1,3 +1,8 @@
+## 0.3.2 - September 19, 2015
+
+- Catch nil merchants
+
+
 ## 0.3.0 - September 19, 2015
 
 - Added support for Merchant and Address

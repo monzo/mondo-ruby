@@ -25,7 +25,7 @@ module Mondo
         self.raw_data['merchant'] = self.client.transaction(self.id, expand: [:merchant]).raw_data['merchant']
       end
 
-      ::Mondo::Merchant.new(raw_data['merchant'], client)
+      ::Mondo::Merchant.new(raw_data['merchant'], client) unless raw_data['merchant'].nil?
     end
 
     def tags
