@@ -11,6 +11,10 @@ module Mondo
     	self.client.api_post("attachment/register", registration_data)
     end
 
+    def deregister
+      self.client.api_post("attachment/deregister", id: self.id)
+    end
+
     def registration_data
       {
         external_id: self.external_id,

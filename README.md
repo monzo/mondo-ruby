@@ -81,4 +81,7 @@ tx.register_attachment(
 )
 
 => [#<Mondo::Attachment {"id"=>"attach_00009253YR2h9Besgp6aLR", "url"=>"https://example.com/nyannyan.jpg", "type"=>"image/jpg", "created"=>"2015-11-13T16:50:05Z"}>]
+
+# And remove it again
+tx.attachments.first.deregsiter
 ```

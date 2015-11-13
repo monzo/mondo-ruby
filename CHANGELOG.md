@@ -1,3 +1,7 @@
+## 0.4.1 - September 19, 2015
+
+- Added support to deregister attachments
+
 ## 0.4.0 - September 19, 2015
 
 - Fix to fetch account_id on initialisation of client (API changed)
