@@ -1,4 +1,4 @@
-## 0.4.1 - September 19, 2015
+## 0.4.2 - September 19, 2015
 
 - Added support for registering, listing & deleting web-hooks
 
