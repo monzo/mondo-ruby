@@ -18,6 +18,14 @@ module Mondo
       self.account_id = args.fetch(:account_id, nil)
       self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
       raise ClientError.new("You must provide a token") unless self.access_token
+      set_account
+    end
+
+    # Hacky
+    def set_account
+      acc = accounts.first
+      return unless acc
+      self.account_id = acc.id
     end
 
     # Replies "pong"
@@ -83,6 +91,14 @@ module Mondo
     # @option [Hash] opts additional request options (e.g. form data, params)
     def api_request(method, path, opts = {})
       request(method, path, opts)
+    end
+
+    # @method accounts
+    # @return [Accounts] all accounts for this user
+    def accounts(opts = {})
+      resp = api_get("/accounts", opts)
+      return resp unless resp.error.nil?
+      resp.parsed["accounts"].map { |acc| Account.new(acc, self) }
     end
 
     # @method transactions
