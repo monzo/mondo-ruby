@@ -1,3 +1,8 @@
+## 0.4.0 - September 19, 2015
+
+- Fix to fetch account_id on initialisation of client (API changed)
+- Added support for attachments on transactions
+
 ## 0.3.2 - September 19, 2015
 
 - Catch nil merchants

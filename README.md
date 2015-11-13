@@ -68,3 +68,17 @@ tx.metadata[:tags] += "#expenses" # tag this "expenses"
 tx.save_metadata
 => true
 ```
+
+
+## Add an attachment to a transaction
+
+```ruby
+tx = mondo.transactions.first
+
+tx.register_attachment(
+  file_url: "https://example.com/nyannyan.jpg", 
+  file_type: "image/jpg"
+)
+
+=> [#<Mondo::Attachment {"id"=>"attach_00009253YR2h9Besgp6aLR", "url"=>"https://example.com/nyannyan.jpg", "type"=>"image/jpg", "created"=>"2015-11-13T16:50:05Z"}>]
+```
