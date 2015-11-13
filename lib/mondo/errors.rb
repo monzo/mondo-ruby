@@ -11,9 +11,11 @@ module Mondo
       @response = response
       @code = response.status
 
+      puts response.inspect
+
       begin
         parsed_response = MultiJson.decode(response.body)
-        errors = parsed_response["error"] || parsed_response["errors"]
+        errors = parsed_response["message"]
         @description = stringify_errors(errors)
       rescue MultiJson::ParseError
         @description = response.body ? response.body.strip : "Unknown error"
@@ -21,7 +23,7 @@ module Mondo
     end
 
     def to_s
-      "#{super} [#{self.code}] #{self.description}"
+      "#{super}. #{self.description}"
     end
 
     private

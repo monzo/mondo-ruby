@@ -150,7 +150,10 @@ module Mondo
       opts[:headers]['User-Agent'] = user_agent
       opts[:headers]['Authorization'] = "Bearer #{@access_token}"
 
-      opts[:body] = MultiJson.encode(opts[:data]) if !opts[:data].nil?
+      if !opts[:data].nil?
+        opts[:body] = URI.encode_www_form(opts[:data])
+        opts[:headers]['Content-Type'] = 'application/x-www-form-urlencoded' # sob sob
+      end
 
       puts opts
 

@@ -14,4 +14,5 @@ module Mondo
   require 'mondo/transaction'
   require 'mondo/account'
   require 'mondo/merchant'
+  require 'mondo/attachment'
 end

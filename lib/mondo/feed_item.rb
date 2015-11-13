@@ -8,7 +8,7 @@ module Mondo
                   :body
 
 
-    # temporary fix until the API accepts data in the request body
+    # temporary fix until the API accepts JSON data in the request body
     def save
       self.client.request(:post, "/feed", params: self.create_params)
     end
