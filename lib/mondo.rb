@@ -15,4 +15,5 @@ module Mondo
   require 'mondo/account'
   require 'mondo/merchant'
   require 'mondo/attachment'
+  require 'mondo/web_hook'
 end

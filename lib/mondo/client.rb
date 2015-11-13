@@ -123,17 +123,39 @@ module Mondo
       FeedItem.new(params, self).save
     end
 
+    def register_web_hook(url)
+      raise ClientError.new("You must provide an account id to register webhooks") unless self.account_id
+      hook = WebHook.new(
+        {
+          account_id: self.account_id,
+          url: url
+        }, 
+        self
+      ).save
+      @web_hooks << hook
+    end
+
+    def web_hooks
+      raise ClientError.new("You must provide an account id to list webhooks") unless self.account_id
+      @web_hooks ||= begin
+        resp = api_get("webhooks", account_id: self.account_id)
+
+        puts resp.inspect
+
+        resp.parsed['webhooks'].map { |hook| WebHook.new(hook, self) }
+      end
+    end
+
     def user_agent
-      @user_agent ||=
-        begin
-          gem_info = "mondo-ruby/v#{Mondo::VERSION}"
-          ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
-          ruby_version = RUBY_VERSION
-          ruby_version += " p#{RUBY_PATCHLEVEL}" if defined?(RUBY_PATCHLEVEL)
-          comment = ["#{ruby_engine} #{ruby_version}"]
-          comment << RUBY_PLATFORM if defined?(RUBY_PLATFORM)
-          "#{gem_info} (#{comment.join("; ")})"
-        end
+      @user_agent ||= begin
+        gem_info = "mondo-ruby/v#{Mondo::VERSION}"
+        ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
+        ruby_version = RUBY_VERSION
+        ruby_version += " p#{RUBY_PATCHLEVEL}" if defined?(RUBY_PATCHLEVEL)
+        comment = ["#{ruby_engine} #{ruby_version}"]
+        comment << RUBY_PLATFORM if defined?(RUBY_PLATFORM)
+        "#{gem_info} (#{comment.join("; ")})"
+      end
     end
 
     # Send a request to the Mondo API servers
@@ -154,8 +176,6 @@ module Mondo
         opts[:body] = URI.encode_www_form(opts[:data])
         opts[:headers]['Content-Type'] = 'application/x-www-form-urlencoded' # sob sob
       end
-
-      puts opts
 
       path = URI.encode(path)
 

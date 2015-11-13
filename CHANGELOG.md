@@ -1,5 +1,10 @@
 ## 0.4.1 - September 19, 2015
 
+- Added support for registering, listing & deleting web-hooks
+
+
+## 0.4.1 - September 19, 2015
+
 - Added support to deregister attachments
 
 ## 0.4.0 - September 19, 2015

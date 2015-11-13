@@ -85,3 +85,25 @@ tx.register_attachment(
 # And remove it again
 tx.attachments.first.deregsiter
 ```
+
+
+## Webhooks
+
+```ruby
+# register a new web-hook
+mondo.register_web_hook("http://google.com")
+
+=> [#<Mondo::WebHook {"id"=>"webhook_00009258bk4RMBeR4niFFp", "account_id"=>"acc_000091N8nkeAUWHJjR9k9J", "url"=>"http://google.com"}>]
+
+# list webhooks
+mondo.web_hooks
+
+=> [#<Mondo::WebHook {"id"=>"webhook_00009258bk4RMBeR4niFFp", "account_id"=>"acc_000091N8nkeAUWHJjR9k9J", "url"=>"http://google.com"}>]
+
+# and remove it
+
+mondo.web_hooks.first.delete
+
+```
+
+
