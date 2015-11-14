@@ -115,4 +115,16 @@ mondo.web_hooks.first.delete
 
 ```
 
+## Feed Items
 
+```ruby
+# Create a new feed item
+
+mondo.create_feed_item(
+  title: "Foo", 
+  image_url: "https://www.example.com/img.jpg", # small icon shown in the feed
+  url: "https://www.example.com", # when feed item is clicked, show this page in a webview
+)
+
+
+```
