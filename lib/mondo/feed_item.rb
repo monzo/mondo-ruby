@@ -3,25 +3,28 @@ module Mondo
 
     attr_accessor :title,
                   :image_url,
-                  :app_uri, # TODO - make me consistent when the Mondo API changes
+                  :url, # TODO - make me consistent when the Mondo API changes
                   :background_color,
-                  :body
+                  :body,
+                  :type
 
 
     # temporary fix until the API accepts JSON data in the request body
     def save
-      self.client.request(:post, "/feed", params: self.create_params)
+      self.client.api_post("/feed", self.create_params)
     end
 
     def create_params
       {
         account_id: self.client.account_id,
-        type: "image",
-        title: self.title,
-        image_url: self.image_url,
-        app_uri: self.app_uri,
-        background_color: self.background_color,
-        body: self.body,
+        type: "basic",
+        url: self.url,
+        params: {
+          title: self.title,
+          image_url: self.image_url,
+          background_color: self.background_color,
+          body: self.body
+        }
       }
     end
   end

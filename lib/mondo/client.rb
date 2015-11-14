@@ -1,3 +1,5 @@
+require 'active_support/all' # really only need core_ext/hash
+
 require 'multi_json'
 require 'oauth2'
 require 'openssl'
@@ -119,6 +121,12 @@ module Mondo
       Transaction.new(resp.parsed['transaction'], self)
     end
 
+    # Returns {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708} 
+    def balance
+      raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
+      api_get("balance", account_id: self.account_id).parsed
+    end
+
     def create_feed_item(params)
       FeedItem.new(params, self).save
     end
@@ -173,7 +181,10 @@ module Mondo
       opts[:headers]['Authorization'] = "Bearer #{@access_token}"
 
       if !opts[:data].nil?
-        opts[:body] = URI.encode_www_form(opts[:data])
+        opts[:body] = opts[:data].to_param
+
+        puts "SETTING BODY #{opts[:body]}"
+
         opts[:headers]['Content-Type'] = 'application/x-www-form-urlencoded' # sob sob
       end
 

@@ -1,18 +1,28 @@
-## 0.4.3 - September 19, 2015
+## 0.4.5 - Novermber 14, 2015
+
+- Add support for balance
+
+
+## 0.4.4 - Novermber 14, 2015
+
+- Deeply nested hash support - make Feed Item creation work again
+
+
+## 0.4.3 - Novermber 14, 2015
 
 - Added support for emoji
 
 
-## 0.4.2 - September 19, 2015
+## 0.4.2 - Novermber 14, 2015
 
 - Added support for registering, listing & deleting web-hooks
 
 
-## 0.4.1 - September 19, 2015
+## 0.4.2 - Novermber 13, 2015
 
 - Added support to deregister attachments
 
-## 0.4.0 - September 19, 2015
+## 0.4.2 - Novermber 13, 2015
 
 - Fix to fetch account_id on initialisation of client (API changed)
 - Added support for attachments on transactions

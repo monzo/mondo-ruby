@@ -27,6 +27,15 @@ mondo.ping
 => "pong"
 ```
 
+## Get Balance
+
+```ruby
+mondo.balance
+
+=> {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708} 
+```
+
+
 ## List Transactions
 
 ```ruby
