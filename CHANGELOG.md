@@ -1,3 +1,8 @@
+## 0.4.3 - September 19, 2015
+
+- Added support for emoji
+
+
 ## 0.4.2 - September 19, 2015
 
 - Added support for registering, listing & deleting web-hooks
