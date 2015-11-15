@@ -20,7 +20,7 @@ module Mondo
       self.account_id = args.fetch(:account_id, nil)
       self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
       raise ClientError.new("You must provide a token") unless self.access_token
-      set_account
+      set_account unless account_id
     end
 
     # Hacky

@@ -9,7 +9,7 @@ API documentation, usage guides, and setup information can be found at [getmondo
 ```ruby
 mondo = Mondo::Client.new(
   token: YOUR_TOKEN,
-  account_id: YOUR_ACCOUNT_ID
+  account_id: YOUR_ACCOUNT_ID # recommended, but optional. If not set, the client will fetch it from the API
 )
 ```
 

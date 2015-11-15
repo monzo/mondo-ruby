@@ -1,3 +1,8 @@
+## 0.4.6 - Novermber 14, 2015
+
+- Only fetch account_if if not set
+
+
 ## 0.4.5 - Novermber 14, 2015
 
 - Add support for balance
