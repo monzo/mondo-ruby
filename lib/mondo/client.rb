@@ -139,8 +139,9 @@ module Mondo
           url: url
         }, 
         self
-      ).save
-      @web_hooks << hook
+      )
+      hook.save
+      web_hooks << hook
     end
 
     def web_hooks
