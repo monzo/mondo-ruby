@@ -3,21 +3,32 @@ module Mondo
 
     attr_accessor :id,
       :description,
-      :amount,
-      :currency,
       :notes,
       :metadata,
-      :account_balance,
       :is_load,
       :category,
-      :settled,
-      :local_amount,
-      :local_currency
+      :settled
 
     date_accessor :created
 
-    def amount_with_currency
+    def amount
       Money.new(amount, currency)
+    end
+
+    def local_amount
+      Money.new(local_amount, local_currency)
+    end
+
+    def account_balance
+      Money.new(account_balance, currency)
+    end
+
+    def currency
+      Money::Currency.new(raw_data['currency'])
+    end
+
+    def local_currency
+      Money::Currency.new(raw_data['local_currency'])
     end
 
     def save_metadata
