@@ -12,15 +12,15 @@ module Mondo
     date_accessor :created
 
     def amount
-      Money.new(amount, currency)
+      Money.new(raw_data['amount'], currency)
     end
 
     def local_amount
-      Money.new(local_amount, local_currency)
+      Money.new(raw_data['local_amount'], local_currency)
     end
 
     def account_balance
-      Money.new(account_balance, currency)
+      Money.new(raw_data['account_balance'], currency)
     end
 
     def currency
