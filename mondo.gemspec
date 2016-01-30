@@ -2,6 +2,7 @@ require File.expand_path('../lib/mondo/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'oauth2', '~> 1.0'
+  gem.add_runtime_dependency 'money'
   gem.add_runtime_dependency 'multi_json', '~> 1.10'
 
   gem.add_development_dependency 'rspec', '~> 2.13'

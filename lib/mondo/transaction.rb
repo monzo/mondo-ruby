@@ -16,9 +16,8 @@ module Mondo
 
     date_accessor :created
 
-    # TODO - proper currency library
     def amount_with_currency
-      "#{amount/100}#{currency}"
+      Money.new(amount, currency)
     end
 
     def save_metadata
