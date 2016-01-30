@@ -6,7 +6,13 @@ module Mondo
       :amount,
       :currency,
       :notes,
-      :metadata
+      :metadata,
+      :account_balance,
+      :is_load,
+      :category,
+      :settled,
+      :local_amount,
+      :local_currency
 
     date_accessor :created
 
