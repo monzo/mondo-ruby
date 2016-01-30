@@ -10,6 +10,7 @@ module Mondo
       :settled
 
     date_accessor :created
+    date_accessor :settled
 
     def amount
       Money.new(raw_data['amount'], currency)
