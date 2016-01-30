@@ -128,7 +128,7 @@ module Mondo
       raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
       resp = api_get("balance", account_id: self.account_id)
       return resp unless resp.error.nil?
-      Balance.new(resp.parsed)
+      Balance.new(resp.parsed, self)
     end
 
     def create_feed_item(params)
