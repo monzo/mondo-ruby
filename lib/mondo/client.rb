@@ -104,6 +104,16 @@ module Mondo
       resp.parsed["accounts"].map { |acc| Account.new(acc, self) }
     end
 
+    # @method cards
+    # @return [Cards] all cards for this user
+    def cards(opts = {})
+      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
+      opts.merge!(account_id: self.account_id)
+      resp = api_get("/card/list", opts)
+      return resp unless resp.error.nil?
+      resp.parsed["cards"].map { |tx| Card.new(tx, self) }
+    end
+
     # @method transactions
     # @return [Transactions] all transactions for this user
     def transactions(opts = {})
