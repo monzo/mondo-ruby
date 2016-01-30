@@ -7,6 +7,7 @@ require 'uri'
 require 'cgi'
 require 'time'
 require 'base64'
+require 'money'
 
 module Mondo
   class Client
@@ -121,7 +122,7 @@ module Mondo
       Transaction.new(resp.parsed['transaction'], self)
     end
 
-    # Returns {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708} 
+    # Returns {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708}
     def balance
       raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
       api_get("balance", account_id: self.account_id).parsed
@@ -137,7 +138,7 @@ module Mondo
         {
           account_id: self.account_id,
           url: url
-        }, 
+        },
         self
       )
       hook.save
@@ -218,4 +219,3 @@ module Mondo
     end
   end
 end
-
