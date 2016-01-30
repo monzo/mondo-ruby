@@ -10,6 +10,7 @@ module Mondo
   require 'mondo/transaction'
   require 'mondo/feed_item'
 
+  require 'mondo/balance'
   require 'mondo/address'
   require 'mondo/transaction'
   require 'mondo/account'

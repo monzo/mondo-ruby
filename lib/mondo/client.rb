@@ -122,10 +122,13 @@ module Mondo
       Transaction.new(resp.parsed['transaction'], self)
     end
 
-    # Returns {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708}
+    # @method balance
+    # @return <Balance> of the balance information
     def balance
       raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
-      api_get("balance", account_id: self.account_id).parsed
+      resp = api_get("balance", account_id: self.account_id)
+      return resp unless resp.error.nil?
+      Balance.new(resp.parsed)
     end
 
     def create_feed_item(params)
