@@ -8,5 +8,19 @@ module Mondo
     def active?
       status == 'ACTIVE'
     end
+
+    def freeze!
+      self.client.api_put("/card/toggle", {
+        card_id: id,
+        status: 'INACTIVE'
+      })
+    end
+
+    def unfreeze!
+      self.client.api_put("/card/toggle", {
+        card_id: id,
+        status: 'ACTIVE'
+      })
+    end
   end
 end
