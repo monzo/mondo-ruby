@@ -6,7 +6,7 @@ module Mondo
     date_accessor :created
 
     def balance
-      self.client.balance(id)
+      self.client.balance
     end
   end
 end
