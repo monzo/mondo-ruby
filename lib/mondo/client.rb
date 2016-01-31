@@ -127,6 +127,8 @@ module Mondo
     # @method transaction
     # @return <Transaction> of the transaction information
     def transaction(transaction_id, opts = {})
+      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
+      raise ClientError.new("You must provide an transaction id to query transactions") unless transaction_id
       resp = api_get("/transactions/#{transaction_id}", opts)
       return resp unless resp.error.nil?
       Transaction.new(resp.parsed['transaction'], self)
