@@ -1,7 +1,9 @@
 module Mondo
   class Merchant < Resource
 
-    attr_accessor :id, :group_id, :logo, :name, :raw_data, :address, :emoji, :online
+    attr_accessor :id, :group_id, :logo, :name, :raw_data, :address, :emoji
+
+    boolean_accessor :online, :is_load, :settled
 
     date_accessor :created
 
