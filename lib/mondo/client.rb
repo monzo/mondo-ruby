@@ -135,9 +135,10 @@ module Mondo
 
     # @method balance
     # @return <Balance> of the balance information
-    def balance
-      raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
-      resp = api_get("balance", account_id: self.account_id)
+    def balance(account_id = nil)
+      account_id ||= self.account_id
+      raise ClientError.new("You must provide an account id to see your balance") unless account_id
+      resp = api_get("balance", account_id: account_id)
       return resp if resp.error.present?
       Balance.new(resp.parsed, self)
     end
