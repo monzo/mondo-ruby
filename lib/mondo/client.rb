@@ -100,7 +100,7 @@ module Mondo
     # @return [Accounts] all accounts for this user
     def accounts(opts = {})
       resp = api_get("/accounts", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       resp.parsed["accounts"].map { |acc| Account.new(acc, self) }
     end
 
@@ -110,7 +110,7 @@ module Mondo
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
       opts.merge!(account_id: self.account_id)
       resp = api_get("/card/list", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       resp.parsed["cards"].map { |tx| Card.new(tx, self) }
     end
 
@@ -120,7 +120,7 @@ module Mondo
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
       opts.merge!(account_id: self.account_id)
       resp = api_get("/transactions", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
     end
 
@@ -130,7 +130,7 @@ module Mondo
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
       raise ClientError.new("You must provide an transaction id to query transactions") unless transaction_id
       resp = api_get("/transactions/#{transaction_id}", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       Transaction.new(resp.parsed['transaction'], self)
     end
 
@@ -139,7 +139,7 @@ module Mondo
     def balance
       raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
       resp = api_get("balance", account_id: self.account_id)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       Balance.new(resp.parsed, self)
     end
 
