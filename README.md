@@ -129,7 +129,7 @@ card.freeze
 
 #### Unfreeze Card
 ```ruby
-card.freeze
+card.unfreeze
 ```
 
 ## Feed Items
