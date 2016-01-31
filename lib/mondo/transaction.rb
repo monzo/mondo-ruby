@@ -7,10 +7,15 @@ module Mondo
       :metadata,
       :is_load,
       :category,
-      :settled
+      :settled,
+      :decline_reason
 
     date_accessor :created
     date_accessor :settled
+
+    def declined?
+      raw_data['decline_reason'].present?
+    end
 
     def amount
       Money.new(raw_data['amount'], currency)
