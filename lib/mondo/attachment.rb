@@ -1,6 +1,6 @@
 module Mondo
   class Attachment < Resource
-    attr_accessor :id, :url, :type
+    attr_accessor :id, :user_id, :external_id, :file_url, :file_type, :url, :type
 
     date_accessor :created
 
