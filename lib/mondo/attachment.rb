@@ -1,7 +1,7 @@
 module Mondo
   class Attachment < Resource
-    attr_accessor :id, :user_id, :external_id, :file_url, :file_type
-    
+    attr_accessor :id, :user_id, :external_id, :file_url, :file_type, :url, :type
+
     date_accessor :created
 
 
@@ -19,7 +19,7 @@ module Mondo
       {
         external_id: self.external_id,
         file_url: self.file_url,
-        file_type: self.file_type, 
+        file_type: self.file_type,
       }
     end
   end

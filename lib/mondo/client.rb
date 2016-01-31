@@ -7,6 +7,7 @@ require 'uri'
 require 'cgi'
 require 'time'
 require 'base64'
+require 'money'
 
 module Mondo
   class Client
@@ -99,8 +100,18 @@ module Mondo
     # @return [Accounts] all accounts for this user
     def accounts(opts = {})
       resp = api_get("/accounts", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       resp.parsed["accounts"].map { |acc| Account.new(acc, self) }
+    end
+
+    # @method cards
+    # @return [Cards] all cards for this user
+    def cards(opts = {})
+      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
+      opts.merge!(account_id: self.account_id)
+      resp = api_get("/card/list", opts)
+      return resp if resp.error.present?
+      resp.parsed["cards"].map { |tx| Card.new(tx, self) }
     end
 
     # @method transactions
@@ -109,22 +120,27 @@ module Mondo
       raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
       opts.merge!(account_id: self.account_id)
       resp = api_get("/transactions", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
     end
 
     # @method transaction
     # @return <Transaction> of the transaction information
     def transaction(transaction_id, opts = {})
+      raise ClientError.new("You must provide an transaction id to query transactions") unless transaction_id
       resp = api_get("/transactions/#{transaction_id}", opts)
-      return resp unless resp.error.nil?
+      return resp if resp.error.present?
       Transaction.new(resp.parsed['transaction'], self)
     end
 
-    # Returns {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708} 
-    def balance
-      raise ClientError.new("You must provide an account id to see your balance") unless self.account_id
-      api_get("balance", account_id: self.account_id).parsed
+    # @method balance
+    # @return <Balance> of the balance information
+    def balance(account_id = nil)
+      account_id ||= self.account_id
+      raise ClientError.new("You must provide an account id to see your balance") unless account_id
+      resp = api_get("balance", account_id: account_id)
+      return resp if resp.error.present?
+      Balance.new(resp.parsed, self)
     end
 
     def create_feed_item(params)
@@ -137,7 +153,7 @@ module Mondo
         {
           account_id: self.account_id,
           url: url
-        }, 
+        },
         self
       )
       hook.save
@@ -218,4 +234,3 @@ module Mondo
     end
   end
 end
-

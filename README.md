@@ -32,7 +32,7 @@ mondo.ping
 ```ruby
 mondo.balance
 
-=> {"balance"=>-7708, "currency"=>"GBP", "spend_today"=>-12708} 
+=> # <Mondo::Balance {"balance"=>642, "currency"=>"GBP", "spend_today"=>0}>}
 ```
 
 
@@ -59,11 +59,9 @@ mondo.transactions(expand: [:merchant], limit: 2, since: "2015-08-10T23:00:00Z")
 mondo.transaction(tx_00008zvemPnUEdNo8attNB)
 => #<Mondo::Transaction -5GBP PRET A MANGER          LONDON        GBR tx_00008zvemPnUEdNo8attNB>
 
-
-# TODO - make a Merchant object
 mondo.transactions.last.merchant
 =>
-#<Mondo::Merchant merch_000090ER75UzBxejYTIb4r {"id"=>"merch_000090ER75UzBxejYTIb4r", "group_id"=>"grp_00008yEdfHhvbwnQcsYryL", "created"=>"2015-09-19T09:42:16Z", "name"=>"Department Of Coffee And Social Affairs", "logo"=>"http://avatars.io/twitter/deptofcoffee/?size=large", "address"=>{"address"=>"14-16 Leather Ln", "city"=>"London", "region"=>"Greater London", "country"=>"GB", "postcode"=>"EC1N 7SU", "latitude"=>51.519348553897686, "longitude"=>-0.1090317964553833}}> 
+#<Mondo::Merchant merch_000090ER75UzBxejYTIb4r {"id"=>"merch_000090ER75UzBxejYTIb4r", "group_id"=>"grp_00008yEdfHhvbwnQcsYryL", "created"=>"2015-09-19T09:42:16Z", "name"=>"Department Of Coffee And Social Affairs", "logo"=>"http://avatars.io/twitter/deptofcoffee/?size=large", "address"=>{"address"=>"14-16 Leather Ln", "city"=>"London", "region"=>"Greater London", "country"=>"GB", "postcode"=>"EC1N 7SU", "latitude"=>51.519348553897686, "longitude"=>-0.1090317964553833}}>
 ```
 
 ## Update Transaction Tags
@@ -85,14 +83,14 @@ tx.save_metadata
 tx = mondo.transactions.first
 
 tx.register_attachment(
-  file_url: "https://example.com/nyannyan.jpg", 
+  file_url: "https://example.com/nyannyan.jpg",
   file_type: "image/jpg"
 )
 
 => [#<Mondo::Attachment {"id"=>"attach_00009253YR2h9Besgp6aLR", "url"=>"https://example.com/nyannyan.jpg", "type"=>"image/jpg", "created"=>"2015-11-13T16:50:05Z"}>]
 
 # And remove it again
-tx.attachments.first.deregsiter
+tx.attachments.first.deregister
 ```
 
 
@@ -115,16 +113,33 @@ mondo.web_hooks.first.delete
 
 ```
 
+## Cards
+
+```ruby
+mondo.cards
+=> [
+  #<Mondo::Card {"id"=>"card_000000", "processor_token"=>"1234", "processor"=>"gps", "account_id"=>"account_12345", "last_digits"=>"4242", "name"=>"Your Name", "expires"=>"01/2220", "status"=>"ACTIVE", "created"=>"2016-01-20T17:23:05.51Z"}>
+]
+```
+
+#### Freeze Card
+```ruby
+card.freeze
+```
+
+#### Unfreeze Card
+```ruby
+card.unfreeze
+```
+
 ## Feed Items
 
 ```ruby
 # Create a new feed item
 
 mondo.create_feed_item(
-  title: "Foo", 
+  title: "Foo",
   image_url: "https://www.example.com/img.jpg", # small icon shown in the feed
   url: "https://www.example.com", # when feed item is clicked, show this page in a webview
 )
-
-
 ```
