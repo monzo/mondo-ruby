@@ -143,3 +143,11 @@ mondo.create_feed_item(
   url: "https://www.example.com", # when feed item is clicked, show this page in a webview
 )
 ```
+
+## Tests
+
+We need some tests. See "Contributing"
+
+## Contributing
+
+Pull requests welcome! 
