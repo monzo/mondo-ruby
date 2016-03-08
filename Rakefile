@@ -17,6 +17,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = %w[--color]
 end
 
+task :default => [:spec]
 
 def generate_changelog(last_version, new_version)
   commits = `git log v#{last_version}.. --oneline`.split("\n")
