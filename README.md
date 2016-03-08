@@ -15,7 +15,11 @@ mondo = Mondo::Client.new(
 
 ## Configure a different API URL
 ```ruby
-mondo.api_url = "https://otherurl.com"
+mondo = Mondo::Client.new(
+  token: ...,
+  account_id: ...,
+  api_url: "https://otherurl.com"
+)
 ```
 
 ## Ping
