@@ -1,5 +1,4 @@
-require 'active_support/all' # really only need core_ext/hash
-
+require 'active_support/core_ext/hash'
 require 'multi_json'
 require 'oauth2'
 require 'openssl'
@@ -16,7 +15,7 @@ module Mondo
     attr_accessor :access_token, :account_id, :api_url
 
     def initialize(args = {})
-      Utils.symbolize_keys! args
+      args.symbolize_keys!
       self.access_token = args.fetch(:token)
       self.account_id = args.fetch(:account_id, nil)
       self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
