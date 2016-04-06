@@ -1,12 +1,15 @@
 module Mondo
   class Account < Resource
+    FIELDS = [
+      :id, :account_number,
+      :description, :sort_code
+    ]
 
-    attr_accessor :id, :description, :raw_data, :sort_code, :account_number
-
+    attr_accessor *FIELDS
     date_accessor :created
 
     def balance
-      self.client.balance(id)
+      self.client.balance(@id)
     end
   end
 end

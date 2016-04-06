@@ -1,17 +1,15 @@
 module Mondo
   class Transaction < Resource
 
-    attr_accessor :id,
-      :description,
-      :notes,
-      :metadata,
-      :is_load,
-      :category,
-      :settled,
-      :decline_reason
+    FIELDS = [
+      :id, :description, :notes,
+      :metadata, :is_load, :category,
+      :settled, :decline_reason
+    ]
 
-    date_accessor :created
-    date_accessor :settled
+    attr_accessor *FIELDS
+
+    date_accessor :created, :settled
 
     def declined?
       raw_data['decline_reason'].present?
@@ -38,25 +36,24 @@ module Mondo
     end
 
     def save_metadata
-      self.client.api_patch("/transactions/#{self.id}", metadata: self.metadata)
+      self.client.api_patch("/transactions/%i" % self.id, metadata: self.metadata)
     end
 
     def register_attachment(args={})
-      attachment = Attachment.new(
-        {
-          external_id: self.id,
-          file_url: args.fetch(:file_url),
-          file_type: args.fetch(:file_type)
-        },
-        self.client
-      )
+      attachment = Attachment.new({
+        external_id: self.id,
+        file_url:    args.fetch(:file_url),
+        file_type:   args.fetch(:file_type)
+      }, self.client)
 
       self.attachments << attachment if attachment.register
     end
 
     def attachments
       @transactions ||= begin
-        raw_data['attachments'].map { |tx| Attachment.new(tx, self.client) }
+        raw_data['attachments'].map do |attachment|
+          Attachment.new(attachment, self.client)
+        end
       end
     end
 

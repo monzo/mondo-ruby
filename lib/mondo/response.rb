@@ -1,29 +1,24 @@
 module Mondo
   class Response
-    attr_reader :response, :parsed
+    attr_reader   :response, :headers, :status, :body
     attr_accessor :error, :options
 
     # Initializes a Response instance
     #
     # @param [Faraday::Response] response The Faraday response instance
-    def initialize(resp)
-      @response = resp
-      @parsed = -> { MultiJson.load(body) rescue body }.call
+    def initialize(response)
+      @response = response
+      @headers  = response.headers
+      @status   = response.status
+      @body     = response.body || ''
     end
 
-    # The HTTP response headers
-    def headers
-      response.headers
-    end
-
-    # The HTTP response status code
-    def status
-      response.status
-    end
-
-    # The HTTP response body
-    def body
-      response.body || ''
+    def parsed_response
+      @parsed_response ||= begin
+        MultiJson.load(body)
+      rescue MultiJson::ParseError
+        body
+      end
     end
   end
 end

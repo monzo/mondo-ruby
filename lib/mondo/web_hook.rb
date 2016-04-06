@@ -8,8 +8,9 @@ module Mondo
     end
 
     def delete
-      self.client.api_delete("webhooks/#{self.id}")
+      self.client.api_delete("webhooks/%i" % self.id)
       true
     end
+
   end
 end

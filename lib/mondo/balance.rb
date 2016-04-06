@@ -1,15 +1,21 @@
 module Mondo
   class Balance < Resource
     def balance
-      Money.new(raw_data['balance'], currency)
+      as_money(raw_data['balance'])
     end
 
     def spent_today
-      Money.new(raw_data['spent_today'], currency)
+      as_money(raw_data['spent_today'])
     end
 
     def currency
       Money::Currency.new(raw_data['currency'])
+    end
+
+    private
+
+    def as_money(data)
+      Money.new(data, currency)
     end
   end
 end
