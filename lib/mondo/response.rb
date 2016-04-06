@@ -16,7 +16,7 @@ module Mondo
     def parsed_response
       @parsed_response ||= begin
         MultiJson.load(body)
-      rescue
+      rescue MultiJson::ParseError
         body
       end
     end
