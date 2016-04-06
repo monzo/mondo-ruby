@@ -1,36 +1,31 @@
-require 'active_support/all' # really only need core_ext/hash
+require "active_support/all" # really only need core_ext/hash
 
-require 'multi_json'
-require 'oauth2'
-require 'openssl'
-require 'uri'
-require 'cgi'
-require 'time'
-require 'base64'
-require 'money'
+require "multi_json"
+require "oauth2"
+require "openssl"
+require "uri"
+require "cgi"
+require "time"
+require "base64"
+require "money"
 
 module Mondo
   class Client
     include Utils::Hash
 
-    DEFAULT_API_URL = 'https://api.getmondo.co.uk'
+    DEFAULT_API_URL = "https://api.getmondo.co.uk"
 
     attr_accessor :access_token, :account_id, :api_url
 
     def initialize(args = {})
-      symbolize_keys! args
-      self.access_token = args.fetch(:token)
-      self.account_id = args.fetch(:account_id, nil)
-      self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
-      raise ClientError.new("You must provide a token") unless self.access_token
-      set_account unless account_id
-    end
+      symbolize_keys!(args)
 
-    # Hacky
-    def set_account
-      acc = accounts.first
-      return unless acc
-      self.account_id = acc.id
+      @access_token = args.fetch(:token)
+      @account_id   = args.fetch(:account_id, nil)
+      @api_url      = args.fetch(:api_url, DEFAULT_API_URL)
+
+      require_access_token!
+      set_account! unless @account_id
     end
 
     # Replies "pong"
@@ -101,48 +96,68 @@ module Mondo
     # @method accounts
     # @return [Accounts] all accounts for this user
     def accounts(opts = {})
-      resp = api_get("/accounts", opts)
-      return resp if resp.error.present?
-      resp.parsed_response["accounts"].map { |acc| Account.new(acc, self) }
+      response = api_get("/accounts", opts)
+
+      unless response.error.present?
+        response.parsed_response["accounts"].map do |account|
+          Account.new(account, self)
+        end
+      end || resp
     end
 
     # @method cards
     # @return [Cards] all cards for this user
     def cards(opts = {})
-      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
-      opts.merge!(account_id: self.account_id)
-      resp = api_get("/card/list", opts)
-      return resp if resp.error.present?
-      resp.parsed_response["cards"].map { |tx| Card.new(tx, self) }
+      require_account_id!
+      opts.merge!(account_id: @account_id)
+
+      response = api_get("/card/list", opts)
+
+      unless response.error.present?
+        response.parsed_response["cards"].map do |card|
+          Card.new(card, self)
+        end
+      end || response
     end
 
     # @method transactions
     # @return [Transactions] all transactions for this user
     def transactions(opts = {})
-      raise ClientError.new("You must provide an account id to query transactions") unless self.account_id
-      opts.merge!(account_id: self.account_id)
-      resp = api_get("/transactions", opts)
-      return resp if resp.error.present?
-      resp.parsed_response["transactions"].map { |tx| Transaction.new(tx, self) }
+      require_account_id!
+      opts.merge!(account_id: @account_id)
+
+      response = api_get("/transactions", opts)
+
+      unless response.error.present?
+        response.parsed_response["transactions"].map do |transaction|
+          Transaction.new(transaction, self)
+        end
+      end || response
     end
 
     # @method transaction
     # @return <Transaction> of the transaction information
     def transaction(transaction_id, opts = {})
-      raise ClientError.new("You must provide an transaction id to query transactions") unless transaction_id
-      resp = api_get("/transactions/#{transaction_id}", opts)
-      return resp if resp.error.present?
-      Transaction.new(resp.parsed_response['transaction'], self)
+      unless transaction_id
+        raise ClientError.new("You must provide an transaction id to query transactions")
+      end
+
+      response = api_get("/transactions/#{transaction_id}", opts)
+
+      unless response.error.present?
+        Transaction.new(response.parsed_response["transaction"], self)
+      end || response
     end
 
     # @method balance
     # @return <Balance> of the balance information
-    def balance(account_id = nil)
-      account_id ||= self.account_id
-      raise ClientError.new("You must provide an account id to see your balance") unless account_id
-      resp = api_get("balance", account_id: account_id)
-      return resp if resp.error.present?
-      Balance.new(resp.parsed_response, self)
+    def balance(for_account_id = nil)
+      for_account_id ||= @account_id
+      require_account_id!
+
+      response = api_get("balance", account_id: for_account_id)
+      return response if response.error.present?
+      Balance.new(response.parsed_response, self)
     end
 
     def create_feed_item(params)
@@ -150,33 +165,29 @@ module Mondo
     end
 
     def register_web_hook(url)
-      raise ClientError.new("You must provide an account id to register webhooks") unless self.account_id
-      hook = WebHook.new(
-        {
-          account_id: self.account_id,
-          url: url
-        },
-        self
-      )
+      require_account_id!
+
+      hook = WebHook.new({ account_id: @account_id, url: url }, self)
       hook.save
+
       web_hooks << hook
     end
 
     def web_hooks
-      raise ClientError.new("You must provide an account id to list webhooks") unless self.account_id
+      require_account_id!
+
       @web_hooks ||= begin
-        resp = api_get("webhooks", account_id: self.account_id)
-
-        puts resp.inspect
-
-        resp.parsed_response['webhooks'].map { |hook| WebHook.new(hook, self) }
+        response = api_get("webhooks", account_id: @account_id)
+        response.parsed_response["webhooks"].map do |webhook|
+          WebHook.new(webhook, self)
+        end
       end
     end
 
     def user_agent
       @user_agent ||= begin
         gem_info = "mondo-ruby/v#{Mondo::VERSION}"
-        ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
+        ruby_engine = defined?(RUBY_ENGINE) ? RUBY_ENGINE : "ruby"
         ruby_version = RUBY_VERSION
         ruby_version += " p#{RUBY_PATCHLEVEL}" if defined?(RUBY_PATCHLEVEL)
         comment = ["#{ruby_engine} #{ruby_version}"]
@@ -191,25 +202,25 @@ module Mondo
     # @param [String] path the path fragment of the URL
     # @option [Hash] opts query string parameters, headers
     def request(method, path, opts = {})
-      raise ClientError, 'Access token missing' unless @access_token
+      raise ClientError, "Access token missing" unless @access_token
 
-      opts[:headers] = {} if opts[:headers].nil?
-      opts[:headers]['Accept'] = 'application/json'
-      opts[:headers]['Content-Type'] = 'application/json' unless method == :get
-      opts[:headers]['User-Agent'] = user_agent
-      opts[:headers]['Authorization'] = "Bearer #{@access_token}"
+      opts[:headers] = {} unless opts[:headers]
+      opts[:headers]["Accept"] = "application/json"
+      opts[:headers]["Content-Type"] = "application/json" unless method == :get
+      opts[:headers]["User-Agent"] = user_agent
+      opts[:headers]["Authorization"] = "Bearer %s" % @access_token
 
       if !opts[:data].nil?
         opts[:body] = opts[:data].to_param
 
         puts "SETTING BODY #{opts[:body]}"
 
-        opts[:headers]['Content-Type'] = 'application/x-www-form-urlencoded' # sob sob
+        opts[:headers]["Content-Type"] = "application/x-www-form-urlencoded" # sob sob
       end
 
       path = URI.encode(path)
 
-      resp = connection.run_request(method, path, opts[:body], opts[:headers]) do |req|
+      response = connection.run_request(method, path, opts[:body], opts[:headers]) do |req|
         req.params = opts[:params] if !opts[:params].nil?
       end
 
@@ -233,6 +244,26 @@ module Mondo
     # The Faraday connection object
     def connection
       @connection ||= Faraday.new(self.api_url, { ssl: { verify: false } })
+    end
+
+    private
+
+    def require_access_token!
+      unless @access_token
+        raise ClientError.new("You must provide a valid access token")
+      end
+    end
+
+    def require_account_id!
+      unless @account_id
+        raise ClientError.new("You must provide an account id to list webhooks")
+      end
+    end
+
+    def set_account!
+      if account = accounts.first
+        @account_id = account.id
+      end
     end
   end
 end
