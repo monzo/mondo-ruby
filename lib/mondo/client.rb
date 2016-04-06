@@ -11,12 +11,14 @@ require 'money'
 
 module Mondo
   class Client
+    include Utils::Hash
+
     DEFAULT_API_URL = 'https://api.getmondo.co.uk'
 
     attr_accessor :access_token, :account_id, :api_url
 
     def initialize(args = {})
-      Utils.symbolize_keys! args
+      symbolize_keys! args
       self.access_token = args.fetch(:token)
       self.account_id = args.fetch(:account_id, nil)
       self.api_url = args.fetch(:api_url, DEFAULT_API_URL)
