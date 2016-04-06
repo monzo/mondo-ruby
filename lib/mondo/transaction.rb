@@ -9,8 +9,7 @@ module Mondo
 
     attr_accessor *FIELDS
 
-    date_accessor :created
-    date_accessor :settled
+    date_accessor :created, :settled
 
     def declined?
       raw_data['decline_reason'].present?
