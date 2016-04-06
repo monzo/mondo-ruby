@@ -3,11 +3,15 @@ module Mondo
 
     attr_accessor :client, :raw_data
 
-    def initialize(hash={}, client)
+    def initialize(hash = {}, client)
       self.raw_data = hash
       self.client = client
-      hash.each { |key,val| send("#{key}=", val) if respond_to?("#{key}=") }
-      self.to_s
+
+      hash.each do |key, val|
+        if respond_to?("#{key}=")
+          send("#{key}=", val)
+        end
+      end
     end
 
     def to_s
@@ -15,7 +19,7 @@ module Mondo
     end
 
     def inspect
-      self.to_s
+      to_s
     end
 
     class << self
@@ -44,8 +48,13 @@ module Mondo
       end
 
       private
+
       def alias_question(attrs)
-        attrs.each{ |attr| define_method("#{attr}?"){ send(attr) || false } }
+        attrs.each do |attr|
+          define_method("#{attr}?") do
+            send(attr) || false
+          end
+        end
       end
     end
   end
