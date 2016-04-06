@@ -22,7 +22,7 @@ module Mondo
     end
 
     def to_s
-      "#{super}. #{self.description}"
+      "%s. %s" % [super, @description]
     end
 
     private
