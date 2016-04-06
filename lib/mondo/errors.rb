@@ -1,17 +1,16 @@
 require 'multi_json'
 
 module Mondo
-  class Error < StandardError
-  end
+  class Error < StandardError; end
+  class ClientError < Error; end
+  class SignatureError < Error; end
 
   class ApiError < Error
-    attr_reader :response, :code, :description
+    attr_reader :response, :response_code, :description
 
     def initialize(response)
-      @response = response
-      @code = response.status
-
-      puts response.inspect
+      @response      = response
+      @response_code = response.status
 
       begin
         parsed_response = MultiJson.decode(response.body)
@@ -40,11 +39,5 @@ module Mondo
         errors.to_s
       end
     end
-  end
-
-  class ClientError < Error
-  end
-
-  class SignatureError < Error
   end
 end
