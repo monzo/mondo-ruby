@@ -6,12 +6,12 @@ module Mondo
 
     # String Helpers
     module String
-      def camelize(str)
-        str.split('_').map(&:capitalize).join
+      def camelize(string)
+        string.split('_').map(&:capitalize).join
       end
 
-      def underscore(str)
-        str.gsub(/(.)([A-Z])/) { "#{$1}_#{$2.downcase}" }.downcase
+      def underscore(string)
+        string.gsub(/(.)([A-Z])/) { "#{$1}_#{$2.downcase}" }.downcase
       end
     end
 
