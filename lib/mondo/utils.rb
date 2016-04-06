@@ -30,5 +30,23 @@ module Mondo
         hash
       end
     end
+
+    # Error Helpers
+    module Errors
+      def stringify_errors(errors)
+        case errors
+        when Array
+          errors.join(", ")
+        when Hash
+          errors.flat_map do |field, messages|
+            messages.map do |message|
+              "%s %s" % [field, message]
+            end
+          end.join(", ")
+        else
+          errors.to_s
+        end
+      end
+    end
   end
 end
