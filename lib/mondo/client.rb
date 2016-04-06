@@ -35,7 +35,7 @@ module Mondo
 
     # Replies "pong"
     def ping
-      api_request(:get, "/ping").parsed["ping"]
+      api_request(:get, "/ping").parsed_response["ping"]
     end
 
     # Issue an GET request to the API server
@@ -103,7 +103,7 @@ module Mondo
     def accounts(opts = {})
       resp = api_get("/accounts", opts)
       return resp if resp.error.present?
-      resp.parsed["accounts"].map { |acc| Account.new(acc, self) }
+      resp.parsed_response["accounts"].map { |acc| Account.new(acc, self) }
     end
 
     # @method cards
@@ -113,7 +113,7 @@ module Mondo
       opts.merge!(account_id: self.account_id)
       resp = api_get("/card/list", opts)
       return resp if resp.error.present?
-      resp.parsed["cards"].map { |tx| Card.new(tx, self) }
+      resp.parsed_response["cards"].map { |tx| Card.new(tx, self) }
     end
 
     # @method transactions
@@ -123,7 +123,7 @@ module Mondo
       opts.merge!(account_id: self.account_id)
       resp = api_get("/transactions", opts)
       return resp if resp.error.present?
-      resp.parsed["transactions"].map { |tx| Transaction.new(tx, self) }
+      resp.parsed_response["transactions"].map { |tx| Transaction.new(tx, self) }
     end
 
     # @method transaction
@@ -132,7 +132,7 @@ module Mondo
       raise ClientError.new("You must provide an transaction id to query transactions") unless transaction_id
       resp = api_get("/transactions/#{transaction_id}", opts)
       return resp if resp.error.present?
-      Transaction.new(resp.parsed['transaction'], self)
+      Transaction.new(resp.parsed_response['transaction'], self)
     end
 
     # @method balance
@@ -142,7 +142,7 @@ module Mondo
       raise ClientError.new("You must provide an account id to see your balance") unless account_id
       resp = api_get("balance", account_id: account_id)
       return resp if resp.error.present?
-      Balance.new(resp.parsed, self)
+      Balance.new(resp.parsed_response, self)
     end
 
     def create_feed_item(params)
@@ -169,7 +169,7 @@ module Mondo
 
         puts resp.inspect
 
-        resp.parsed['webhooks'].map { |hook| WebHook.new(hook, self) }
+        resp.parsed_response['webhooks'].map { |hook| WebHook.new(hook, self) }
       end
     end
 
