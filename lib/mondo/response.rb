@@ -1,6 +1,6 @@
 module Mondo
   class Response
-    attr_reader :headers, :status, :body, :response
+    attr_reader   :response, :headers, :status, :body
     attr_accessor :error, :options
 
     # Initializes a Response instance
