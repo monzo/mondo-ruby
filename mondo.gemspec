@@ -4,10 +4,10 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'oauth2', '~> 1.0'
   gem.add_runtime_dependency 'money'
   gem.add_runtime_dependency 'multi_json', '~> 1.10'
+  gem.add_runtime_dependency 'activesupport', '~> 3.2'
 
   gem.add_development_dependency 'rspec', '~> 2.13'
   gem.add_development_dependency 'yard', '~> 0.8'
-  gem.add_development_dependency 'activesupport', '~> 3.2'
   gem.add_development_dependency 'rake', '~> 10.3'
 
   gem.authors = ['Tom Blomfield']
