@@ -146,8 +146,12 @@ mondo.create_feed_item(
 
 ## Tests
 
+```
+bundle exec rake spec
+```
+
 We need some tests. See "Contributing"
 
 ## Contributing
 
-Pull requests welcome! 
+Pull requests welcome!
