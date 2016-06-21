@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe Mondo do
-  before do
-  end
-
-  describe "tests" do
-    it "run" do
-      expect(1+1).to eq(2)
+  describe 'Client' do
+    describe '#request' do
+      it "should not throw an error when opts param are supplied" do
+        client = Mondo::Client.new(token: "token", account_id: "id")
+        resp = instance_double(Faraday::Response, body: '', status: 200)
+        allow(client.connection).to receive(:run_request).and_return(resp)
+        expect(client.api_post("attachment/register", {})).to be_a(Mondo::Response)
+      end
     end
   end
 end
-

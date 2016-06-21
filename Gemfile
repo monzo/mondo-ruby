@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gemspec
 
-group :development do
+group :development, :test do
   gem "guard", "~> 0.8.8"
   gem "rspec", "~> 3.1"
   if RUBY_PLATFORM.downcase.include?("darwin")
