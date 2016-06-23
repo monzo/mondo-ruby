@@ -11,3 +11,4 @@ mondo-ruby.zip
 .rvmrc
 .rbx
 .bundle
+vendor/bundle
