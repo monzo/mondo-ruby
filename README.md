@@ -144,6 +144,10 @@ mondo.create_feed_item(
 )
 ```
 
+## Debug mode
+
+Add `DEBUG` environment variable to print some additional information.
+
 ## Tests
 
 ```

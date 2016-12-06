@@ -11,7 +11,7 @@ module Mondo
       @response = response
       @code = response.status
 
-      puts response.inspect
+      puts response.inspect if ENV['DEBUG']
 
       begin
         parsed_response = MultiJson.decode(response.body)
