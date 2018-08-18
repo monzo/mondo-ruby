@@ -1,3 +1,7 @@
+## 0.5.1 - August 18, 2018
+
+- Add support for viewing pots
+
 ## 0.4.7 - Novermber 15, 2015
 
 - Fix webhooks bugs

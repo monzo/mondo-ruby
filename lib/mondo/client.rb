@@ -147,6 +147,14 @@ module Mondo
       FeedItem.new(params, self).save
     end
 
+    # @method pots
+    # @return [Pots] all pots for this user
+    def pots(opts = {})
+      resp = api_get("/pots", opts)
+      return resp if resp.error.present?
+      resp.parsed["pots"].map { |p| Pot.new(p, self) }
+    end
+
     def register_web_hook(url)
       raise ClientError.new("You must provide an account id to register webhooks") unless self.account_id
       hook = WebHook.new(
