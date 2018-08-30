@@ -4,6 +4,12 @@ The Mondo Ruby client provides a simple Ruby interface to the Mondo API.
 
 API documentation, usage guides, and setup information can be found at [getmondo.co.uk/docs](https://getmondo.co.uk/docs/).
 
+## Installation
+
+```
+gem install mondo
+```
+
 ## Initialize your client
 
 ```ruby
